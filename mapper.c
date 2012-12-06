@@ -90,8 +90,7 @@ int main(const int argc, const char *argv[]){
 		
 		pthread_create( &thread_id[i], NULL, thread_function, (void *) & data[i] );
 
-		if (i)
-			sleep(rand() % i);
+		sleep(rand() % 2);
 	}
 	
 	for (i=0; i < max_threads; i++){
@@ -146,7 +145,7 @@ void *thread_function(void *data){
 	unsigned long int filesize = map[no + 1] - map[no];
 	
 	
-	
+	// feof is not thread safe...
 	while(! feof(F)){
 		const char *data = fgets(buff, MAX_BUFFER, F);
 				
@@ -217,6 +216,10 @@ void print_usage(const char *argv0){
 	
 	printf("Usage:\n");
 	printf("\t%s [input_filename] [mapper_program] [[num_threads]]\n", argv0);
+	
+	printf("\n");
+
+	printf("If you specify \"-\" as input filename, stdin will be used (without splitting).\n");
 	
 	printf("\n");
 
